@@ -15,7 +15,7 @@ class DynamicArray
   def [](index)
     self.error
     self.check_index(index)
-    
+
     store[index]
   end
 
@@ -37,6 +37,8 @@ class DynamicArray
   # O(1) ammortized; O(n) worst case. Variable because of the possible
   # resize.
   def push(val)
+    # debugger
+    self.resize! if length == capacity
     store[self.length] = val
     self.length += 1
 
@@ -85,5 +87,16 @@ class DynamicArray
 
   # O(n): has to copy over all the elements to the new store.
   def resize!
+    new_store = StaticArray.new(capacity * 2)
+    new_capacity = capacity * 2
+
+    start_index = 0
+    while start_index < self.length
+      new_store[start_index] = store[start_index]
+      start_index += 1
+    end
+
+    @store = new_store
+    @capacity = new_capacity
   end
 end
