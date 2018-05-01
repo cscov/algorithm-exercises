@@ -38,9 +38,15 @@ class RingBuffer
 
   # O(1) ammortized
   def push(val)
+    # debugger
     resize! if length == capacity
 
-    last = (start_idx - 1) % capacity
+    if length == 0
+      store[start_idx] = val
+      self.length += 1
+      return store
+    end
+    last = (length) % capacity
     store[last] = val
     self.length += 1
 
