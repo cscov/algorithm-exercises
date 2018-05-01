@@ -27,7 +27,7 @@ class RingBuffer
 
   # O(1)
   def pop
-    last = (start_idx - 1) % capacity
+    last = (length - 1) % capacity
     popped = store[last]
 
     store[last] = nil
