@@ -14,6 +14,8 @@ class DynamicArray
   # O(1)
   def [](index)
     self.error
+    self.check_index(index)
+    
     store[index]
   end
 
@@ -78,6 +80,7 @@ class DynamicArray
   attr_writer :length
 
   def check_index(index)
+    raise 'index out of bounds' if store[index].nil?
   end
 
   # O(n): has to copy over all the elements to the new store.
