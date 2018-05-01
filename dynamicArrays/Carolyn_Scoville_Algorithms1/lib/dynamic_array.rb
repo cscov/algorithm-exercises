@@ -1,28 +1,45 @@
 require_relative "static_array"
+require 'byebug'
 
 class DynamicArray
   attr_reader :length
 
   def initialize
     @length = 0
+    @capacity = 8
+    initial_store = StaticArray.new(capacity)
+    @store = initial_store
   end
 
   # O(1)
   def [](index)
-    raise 'index out of bounds' if length == 0
+    self.error()
+    store[index]
   end
 
   # O(1)
   def []=(index, value)
+    self.store[index] = value
   end
 
   # O(1)
   def pop
+    raise 'index out of bounds' if length == 0
+    # debugger
+    popped = store[self.length - 1]
+    store[self.length - 1] = nil
+    self.length -= 1
+
+    popped
   end
 
   # O(1) ammortized; O(n) worst case. Variable because of the possible
   # resize.
   def push(val)
+    store[self.length] = val
+    self.length += 1
+
+    store
   end
 
   # O(n): has to shift over all the elements.
@@ -31,6 +48,10 @@ class DynamicArray
 
   # O(n): has to shift over all the elements.
   def unshift(val)
+  end
+
+  def error
+    raise 'index out of bounds' if length == 0
   end
 
   protected
