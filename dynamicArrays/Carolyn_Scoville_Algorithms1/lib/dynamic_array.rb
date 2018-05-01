@@ -4,10 +4,12 @@ class DynamicArray
   attr_reader :length
 
   def initialize
+    @length = 0
   end
 
   # O(1)
   def [](index)
+    raise 'index out of bounds' if length == 0
   end
 
   # O(1)
