@@ -1,4 +1,5 @@
 require_relative "static_array"
+require 'byebug'
 
 class RingBuffer
   attr_reader :length
@@ -26,9 +27,10 @@ class RingBuffer
 
   # O(1)
   def pop
-    popped = store[length - 1]
+    last = (start_idx - 1) % capacity
+    popped = store[last]
 
-    store[length - 1] = nil
+    store[last] = nil
     self.length -= 1
 
     popped
@@ -38,7 +40,8 @@ class RingBuffer
   def push(val)
     resize! if length == capacity
 
-    store[length] = val
+    last = (start_idx - 1) % capacity
+    store[last] = val
     self.length += 1
 
     store
@@ -46,25 +49,31 @@ class RingBuffer
 
   # O(1)
   def shift
-    self.start_idx = 1
-    shifted = store[0]
+    shifted = store[start_idx % capacity]
+    self.start_idx += 1
     self.length -= 1
 
     shifted
+    # p self
   end
 
   # O(1) ammortized
   def unshift(val)
+    # debugger
     resize! if length == capacity
-
-    if store[0] == nil
-      store[0] = val
-      self.start_idx = 0
-    else
-      store[length] = val
-      self.start_idx = length
+    if length == 0
+      store[start_idx % capacity] = val
+      self.length += 1
+      return store
     end
+    start = self.length - 1
+    while start >= 0
+      store[start + 1] = store[start]
+      start -= 1
+    end
+    store[start_idx % capacity] = val
     self.length += 1
+    # p self
   end
 
   protected
