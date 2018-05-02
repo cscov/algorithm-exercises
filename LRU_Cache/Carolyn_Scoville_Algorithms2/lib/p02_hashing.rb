@@ -1,5 +1,5 @@
+
 class Fixnum
-  # Fixnum#hash already implemented for you
 end
 
 class Array
@@ -13,7 +13,7 @@ end
 class String
   def hash
     sum = 0
-    to_hash = self.each_char.with_index do |chr, idx|
+    self.each_char.with_index do |chr, idx|
       sum += (chr.ord * idx)
     end
     sum.hash
@@ -21,11 +21,9 @@ class String
 end
 
 class Hash
-  # This returns 0 because rspec will break if it returns nil
-  # Make sure to implement an actual Hash#hash method
   def hash
     sum = 0
-    to_hash = self.each do |key, val|
+    self.each do |key, val|
       sum += key.to_s.ord * val.to_s.ord
     end
     sum.hash
