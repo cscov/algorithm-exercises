@@ -86,7 +86,6 @@ class LinkedList
   end
 
   def remove(key)
-    # debugger
     current_node = first
     while current_node.key != key && current_node != last
       current_node = current_node.next
@@ -95,8 +94,11 @@ class LinkedList
   end
 
   def each
-    self.each do |node|
-      yield(node)
+    # debugger
+    current_node = first
+    while current_node != last.next
+      yield(current_node)
+      current_node = current_node.next
     end
   end
 
