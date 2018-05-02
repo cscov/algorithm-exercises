@@ -38,11 +38,11 @@ class LinkedList
   end
 
   def first
-    @head
+    @head.next
   end
 
   def last
-    @tail
+    @tail.prev
   end
 
   def empty?
@@ -51,9 +51,9 @@ class LinkedList
 
   def get(key)
     return nil if self.empty?
-    current_node = first.next
+    current_node = first
     while current_node.key != key
-      return nil if current_node.next = last
+      return nil if current_node == last
       current_node = current_node.next
     end
     current_node
@@ -66,17 +66,18 @@ class LinkedList
   end
 
   def append(key, val)
-    debugger
+
     new_node = Node.new(key, val)
     new_node.next = @tail
     @tail.prev.next = new_node
     @tail.prev = new_node
+    p self
   end
 
   def update(key, val)
     return if self.empty?
     current_node = get(key)
-    current_node[key] = val
+    current_node.val = val
   end
 
   def remove(key)
