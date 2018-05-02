@@ -81,7 +81,10 @@ class LinkedList
 
   def update(key, val)
     return if self.empty?
-    current_node = get(key)
+    current_node = first
+    while current_node.key != key
+      current_node = current_node.next
+    end
     current_node.val = val
   end
 
@@ -103,7 +106,7 @@ class LinkedList
   end
 
   # uncomment when you have `each` working and `Enumerable` included
-  # def to_s
-  #   inject([]) { |acc, node| acc << "[#{node.key}, #{node.val}]" }.join(", ")
-  # end
+  def to_s
+    inject([]) { |acc, node| acc << "[#{node.key}, #{node.val}]" }.join(", ")
+  end
 end
