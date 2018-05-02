@@ -56,7 +56,7 @@ class LinkedList
       return nil if current_node == last
       current_node = current_node.next
     end
-    current_node
+    current_node.val
   end
 
   def include?(key)
