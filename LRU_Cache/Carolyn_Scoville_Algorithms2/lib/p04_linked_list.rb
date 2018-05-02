@@ -17,12 +17,11 @@ class Node
   def remove
     # optional but useful, connects previous node to next node
     # and removes self from list.
-    prev_node = self.prev
-    prev_node.next = self.next
-    next_node = self.next
-    next_node.prev = self.prev
-    self.key = nil
-    self.val = nil
+    self.prev.next = self.next if self.prev
+    self.next.prev = self.prev if self.next
+    self.prev = nil
+    self.next = nil
+    self
   end
 end
 
