@@ -12,6 +12,11 @@ end
 
 class String
   def hash
+    sum = 0
+    to_hash = self.each_char.with_index do |chr, idx|
+      sum += (chr.ord * idx)
+    end
+    sum.hash
   end
 end
 
