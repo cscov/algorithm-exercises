@@ -41,6 +41,7 @@ class IntSet
   end
 
   def remove(num)
+    self[num].delete(num)
   end
 
   def include?(num)
