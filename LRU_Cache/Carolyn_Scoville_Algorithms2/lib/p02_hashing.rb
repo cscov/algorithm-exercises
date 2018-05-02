@@ -4,6 +4,9 @@ end
 
 class Array
   def hash
+    to_hash = self.map.with_index { |e, idx|  e * idx }
+    to_hash = to_hash.reduce(&:+)
+    to_hash.hash
   end
 end
 
