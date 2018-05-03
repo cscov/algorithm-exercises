@@ -70,7 +70,6 @@ class BinaryMinHeap
   end
 
   def self.heapify_up(array, child_idx, len = array.length, &prc)
-    # debugger
     return array if child_idx == 0
     prc ||= Proc.new do |el1, el2|
       el1 <=> el2
