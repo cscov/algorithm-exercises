@@ -4,11 +4,7 @@ class BinaryMinHeap
 
   def initialize(&prc)
     @store = []
-    if prc.nil?
-      @prc = Proc.new { |el1, el2| -1 * (el1 <=> el2) }
-    else
-      @prc = prc
-    end
+
   end
 
   def count
@@ -17,7 +13,7 @@ class BinaryMinHeap
 
   def extract
     root = self.peek
-    @store.last, store.first = store.first, store.last
+    @store[-1], store[0] = store[0], store[-1]
     @store.pop
 
     BinaryMinHeap.heapify_up(@store, count - 1)
@@ -49,13 +45,25 @@ class BinaryMinHeap
 
   def self.heapify_down(array, parent_idx, len = array.length, &prc)
     # debugger
+    return array if parent_idx >= len - 1
+    prc ||= Proc.new do |el1, el2|
+      el1 <=> el2
+    end
     children = BinaryMinHeap.child_indices(len, parent_idx)
     if !children.empty?
-      lesser = children[0]
-      lesser = children[1] if children[1] && array[children[1]] < array[children[0]]
-      while array[lesser] < array[parent_idx]
-        array[lesser], array[parent_idx] = array[parent_idx], array[lesser]
-        BinaryMinHeap.heapify_down(array, lesser)
+      if children[1]
+        if prc.call(array[children[1]], array[children[0]]) <= 0
+          chosen = children[1]
+        else
+          chosen = children[0]
+        end
+      else
+        chosen = children[0]
+      end
+
+      if prc.call(array[parent_idx], array[chosen]) == 1
+        array[chosen], array[parent_idx] = array[parent_idx], array[chosen]
+        BinaryMinHeap.heapify_down(array, chosen, len = array.length, &prc)
       end
     end
     array
