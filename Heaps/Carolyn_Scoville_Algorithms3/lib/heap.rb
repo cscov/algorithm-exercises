@@ -12,11 +12,12 @@ class BinaryMinHeap
   end
 
   def extract
+    # debugger
     root = self.peek
     @store[-1], store[0] = store[0], store[-1]
     @store.pop
 
-    BinaryMinHeap.heapify_up(@store, count - 1)
+    BinaryMinHeap.heapify_down(@store, 0, @store.length)
     root
   end
 
@@ -44,7 +45,6 @@ class BinaryMinHeap
   end
 
   def self.heapify_down(array, parent_idx, len = array.length, &prc)
-    # debugger
     return array if parent_idx >= len - 1
     prc ||= Proc.new do |el1, el2|
       el1 <=> el2
@@ -72,13 +72,16 @@ class BinaryMinHeap
   def self.heapify_up(array, child_idx, len = array.length, &prc)
     # debugger
     return array if child_idx == 0
+    prc ||= Proc.new do |el1, el2|
+      el1 <=> el2
+    end
     parent_idx = BinaryMinHeap.parent_index(child_idx)
     parent = array[parent_idx]
-    if parent > array[child_idx]
+    if prc.call(array[child_idx], array[parent_idx]) <= 0
       array[child_idx], array[parent_idx] = array[parent_idx],
                                             array[child_idx]
       child_idx = parent_idx
-      BinaryMinHeap.heapify_up(array, child_idx)
+      BinaryMinHeap.heapify_up(array, child_idx, len = array.length, &prc)
     end
     array
   end
