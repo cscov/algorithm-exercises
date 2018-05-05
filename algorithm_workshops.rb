@@ -15,3 +15,20 @@
     left_stack = []
     str.each_char { |chr|  }
   end
+
+def merge_intervals(array)
+  array.sort!
+  array.each_with_index do |subarray, idx|
+    next if idx == array.length - 1
+    next_sub_zero = array[idx + 1].first
+    next_sub_first = array[idx + 1].last
+    if next_sub_zero < subarray.last
+      subarray[1] = next_sub_first
+      array.delete(array[idx + 1])
+    end
+  end
+  p array
+end
+
+  arr = [[1, 3], [2, 6], [8, 10], [15, 18]]
+  merge_intervals(arr)

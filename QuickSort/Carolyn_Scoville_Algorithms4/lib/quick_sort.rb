@@ -5,37 +5,54 @@ class QuickSort
 
   # Not in-place. Uses O(n) memory.
   def self.sort1(array)
+    return array if array == array.sort
+    return if array.length <= 1
     pivot_idx = QuickSort.partition(array, 0, array.length)
-    left = array[start...pivot_idx]
+    left = array[0...pivot_idx]
+    QuickSort.sort1(left)
+
     right = array[pivot_idx + 1...array.length]
+    QuickSort.sort1(right)
 
-
+    array = left + [pivot] + right
   end
 
   # In-place.
   def self.sort2!(array, start = 0, length = array.length, &prc)
+    # debugger
+    return if array.length <= 1
+    prc ||= Proc.new { |el1, el2| el1 <=> el2 }
+    p array
+    pivot_idx = QuickSort.partition(array, start, length, &prc)
+    p array
+    left = QuickSort.sort2!(array, start, pivot_idx - start, &prc)
+    # right = QuickSort.sort2!(array, pivot_idx + 1, length - pivot_idx - 1, &prc)
+    p array
+
   end
 
   def self.partition(array, start, length, &prc)
-    # debugger
-
+    prc ||= Proc.new { |el1, el2| el1 <=> el2 }
     pivot = array[start]
-    pivot_idx = array.index(pivot)
+    pivot_idx = start
     boundary = start
     finish_idx = start + length - 1
 
-    while boundary != finish_idx
+    while finish_idx > boundary
       check_num = array[boundary + 1]
-      if check_num < pivot
+      if prc.call(check_num, pivot) == -1
         array[pivot_idx], array[boundary + 1] = array[boundary + 1], array[pivot_idx]
-        pivot_idx = array.index(pivot)
+        pivot_idx = boundary + 1
         boundary += 1
       else
+        p boundary
+        p finish_idx
+        p array
         array[boundary + 1], array[finish_idx] = array[finish_idx], array[boundary + 1]
         finish_idx -= 1
       end
     end
 
-    array.index(pivot)
+    boundary
   end
 end
