@@ -19,7 +19,6 @@ class BinarySearchTree
       @node_count += 1
       return
     end
-    debugger
     parent = traverse(root, value)
     if parent.nil?
       parent = root
