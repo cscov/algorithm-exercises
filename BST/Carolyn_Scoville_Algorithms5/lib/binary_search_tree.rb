@@ -10,6 +10,7 @@ class BinarySearchTree
     @root = nil
     @node_count = 0
     @tree_values = []
+    @depth = 0
   end
 
   def insert(value)
@@ -19,7 +20,7 @@ class BinarySearchTree
       @node_count += 1
       return
     end
-    parent = traverse(root, value)
+    parent = search(root, value)
     if parent.nil?
       parent = root
     end
@@ -38,7 +39,7 @@ class BinarySearchTree
   def find(value, tree_node = @root)
     return nil if root.nil?
 
-    current_node = traverse(tree_node, value)
+    current_node = search(tree_node, value)
     return current_node if check_current_node_value(current_node) == value
   end
 
@@ -99,14 +100,28 @@ class BinarySearchTree
   end
 
   def depth(tree_node = @root)
+    leaves = []
+    @tree_values.each do |val|
+      node = find(val)
+      leaves.push(node) if !node.left && !node.right
+    end
+    interim_depth = 0
+    leaves.each do |leaf_node|
+      while leaf_node != tree_node
+        leaf_node = leaf_node.parent
+        interim_depth += 1
+      end
+      @depth = interim_depth if interim_depth > @depth
+      interim_depth = 0
+    end
+    @depth
   end
 
   def is_balanced?(tree_node = @root)
   end
 
   def in_order_traversal(tree_node = @root, arr = [])
-
-    arr.sort
+    @tree_values.sort
   end
 
 
@@ -121,13 +136,13 @@ class BinarySearchTree
     val1 <=> val2
   end
 
-  def traverse(node, value)
+  def search(node, value)
     if check_current_node_value(node).nil?
       nil
     elsif compare_values(node.value, value) == -1 && node.right
-      traverse(node.right, value)
+      search(node.right, value)
     elsif compare_values(node.value, value) == 1 && node.left
-      traverse(node.left, value)
+      search(node.left, value)
     else
       node
     end
