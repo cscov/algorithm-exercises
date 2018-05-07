@@ -43,10 +43,21 @@ class BinarySearchTree
   end
 
   def delete(value)
-    @root = nil if root.value == value
+    if root.value == value
+      @root = nil
+      return
+    end
     node = find(value)
+    debugger
     if !node.left && !node.right
+      parent = node.parent
+      if parent.left.value == value
+        parent.left = nil
+      else
+        parent.right = nil
+      end
       node = nil
+
     elsif node.left && !node.right
       node = node.left
     elsif !node.left && node.right
