@@ -59,9 +59,17 @@ class BinarySearchTree
       node = nil
 
     elsif node.left && !node.right
-      node = node.left
+      if compare_values(node.parent.value, node.left.value) == 1
+        node.parent.left = node.left
+      else
+        node.parent.right = node.left
+      end
     elsif !node.left && node.right
-      node = node.right
+      if compare_values(node.parent.value, node.right.value) == 1
+        node.parent.left = node.right
+      else
+        node.parent.right = node.right
+      end
     else
       max_node = maximum(node.left)
       if max_node.right
