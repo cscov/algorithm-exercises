@@ -49,7 +49,6 @@ class BinarySearchTree
       return
     end
     node = find(value)
-    debugger
     if !node.left && !node.right
       parent = node.parent
       if parent.left.value == value
@@ -106,7 +105,6 @@ class BinarySearchTree
       leaves.push(node) if !node.left && !node.right
     end
     interim_depth = 0
-    debugger
     leaves.each do |leaf_node|
       if leaf_node.value <= tree_node.value
         left_side = true
@@ -128,28 +126,36 @@ class BinarySearchTree
   end
 
   def is_balanced?(tree_node = @root)
-    # debugger
     if tree_node.left
-      left_depth = depth(tree_node)
+      left_depth = depth(tree_node.left)
     else
       left_depth = 0
     end
     p left_depth
     if tree_node.right
-      right_depth = depth(tree_node)
+      right_depth = depth(tree_node.right)
     else
       right_depth = 0
     end
     p right_depth
     diff = (left_depth - right_depth).abs
-    if diff == 0 || diff == 1
+    if diff == 0 || diff == 1 && is_balanced?(tree_node.left) && is_balanced?(tree_node.right)
       return true
     end
     false
   end
 
   def in_order_traversal(tree_node = @root, arr = [])
-    @tree_values.sort
+    # @tree_values.sort
+    if tree_node.left
+      in_order_traversal(tree_node.left, arr)
+    end
+    arr.push(tree_node.value) if !tree_node.nil?
+
+    if tree_node.right
+      in_order_traversal(tree_node.right, arr)
+    end
+    arr
   end
 
 
@@ -175,4 +181,5 @@ class BinarySearchTree
       node
     end
   end
+
 end
