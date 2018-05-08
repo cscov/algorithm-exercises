@@ -6,6 +6,11 @@ class Vertex
     @in_edges = []
     @out_edges = []
   end
+
+  def destroy!
+    @in_edges.each { |edge| edge.destroy! }
+    @out_edges.each { |edge| edge.destroy! }
+  end
 end
 
 class Edge
@@ -21,6 +26,18 @@ class Edge
     @from_vertex.out_edges.delete(self)
     @to_vertex.in_edges.delete(self)
 
-    @from_vertex, @to_vertex = nil, nil 
+    @from_vertex, @to_vertex = nil, nil
+  end
+end
+
+class Graph
+    attr_accessor :vertices
+    
+  def initialize(vertices)
+    @vertices = vertices
+  end
+
+  def destroy_vertex(vertex)
+    @vertices.delete(vertex)
   end
 end

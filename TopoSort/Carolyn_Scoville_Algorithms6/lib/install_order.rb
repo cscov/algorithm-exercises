@@ -6,9 +6,12 @@
 # N.B. this is how `npm` works.
 
 # Import any files you need to
-
+require_relative 'graph'
 
 
 def install_order(arr)
-
+  counter = arr.length - 1
+  while counter >= 0
+    counter -= 1
+  end
 end
